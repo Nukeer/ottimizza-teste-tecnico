@@ -29,9 +29,16 @@
 
     @if (isCreatingTask()) {
     <div class="task-create">
-      <input pInputText type="text" [(ngModel)]="newTaskName" placeholder="Nome da tarefa" (keyup.enter)="createTask()"
-        (keyup.escape)="cancelCreatingTask()" autofocus />
-      <input pInputText type="date" [(ngModel)]="newTaskDueDate" />
+      <p-iftalabel>
+        <input inputId="name" pInputText type="text" class="w-100" [(ngModel)]="newTaskName"
+          placeholder="Nome da tarefa" (keyup.enter)="createTask()" (keyup.escape)="cancelCreatingTask()" autofocus />
+        <label for="name">Nome da tarefa</label>
+      </p-iftalabel>
+      <p-iftalabel>
+        <p-datepicker inputId="dueDate" class="w-100" [(ngModel)]="newTaskDueDate" appendTo="body"
+          [iconDisplay]="'input'" [showIcon]="true" dateFormat="dd/mm/yy" />
+        <label for="dueDate">Data de vencimento</label>
+      </p-iftalabel>
       <div class="task-actions">
         <button pButton severity="success" (click)="createTask()">
           <span pButtonLabel>Criar</span>

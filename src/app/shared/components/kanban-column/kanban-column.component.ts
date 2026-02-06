@@ -10,11 +10,13 @@ import { Task } from '../../models/task';
 import { TaskCardComponent } from '../task-card/task-card.component';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { DatePickerModule } from 'primeng/datepicker';
+import { IftaLabelModule } from 'primeng/iftalabel';
 
 @Component({
   selector: 'app-kanban-column',
   standalone: true,
-  imports: [CommonModule, FormsModule, TaskCardComponent, InputTextModule, ButtonModule],
+  imports: [CommonModule, FormsModule, TaskCardComponent, InputTextModule, ButtonModule, DatePickerModule, IftaLabelModule],
   templateUrl: './kanban-column.component.html',
   styleUrl: './kanban-column.component.scss'
 })

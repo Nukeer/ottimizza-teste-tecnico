@@ -1,16 +1,24 @@
 <div class="task-card" [class.completed]="task.completed" [class.overdue]="isOverdue()">
   @if (isEditing()) {
   <div class="task-edit">
-    <input pInputText type="text" [(ngModel)]="editingName" placeholder="Nome da tarefa" (keyup.enter)="updateTask()"
-      (keyup.escape)="cancelEditing()" autofocus />
-
-    <input pInputText type="date" [(ngModel)]="editingDueDate" />
-
-    <input pInputText [(ngModel)]="editingTags" placeholder="Tags (separadas por vírgula)" />
-
-    <label class="checkbox-label">
-      <input type="checkbox" [(ngModel)]="editingCompleted" />
-      Concluída
+    <p-iftalabel>
+      <input pInputText inputId="name" class="w-100" type="text" [(ngModel)]="editingName" placeholder="Nome da tarefa"
+        (keyup.enter)="updateTask()" (keyup.escape)="cancelEditing()" autofocus />
+      <label for="name">Nome da tarefa</label>
+    </p-iftalabel>
+    <p-iftalabel>
+      <p-datepicker inputId="dueDate" [(ngModel)]="editingDueDate" appendTo="body" [iconDisplay]="'input'"
+        [showIcon]="true" dateFormat="dd/mm/yy" />
+      <label for="dueDate">Data de vencimento</label>
+    </p-iftalabel>
+    <p-iftalabel>
+      <p-autocomplete inputId="tags" [(ngModel)]="editingTags" multiple fluid [typeahead]="false"
+        placeholder="Digite e pressione enter" />
+      <label for="tags">Tags</label>
+    </p-iftalabel>
+    <label>
+      <p-checkbox inputId="completed" name="completed" [binary]="true" [(ngModel)]="editingCompleted" />
+      <label for="completed" class="ml-2"> Concluída </label>
     </label>
 
     <div class="task-actions">
@@ -25,10 +33,12 @@
   } @else {
   <div class="task-view" (click)="startEditing()">
     <div class="task-header">
-      <label class="checkbox-container">
+      <p-checkbox inputId="completed" name="completed" [binary]="true" [(ngModel)]="task.completed"
+        (change)="toggleCompleted()" (click)="$event.stopPropagation()" />
+      <!-- <label class="checkbox-container">
         <input type="checkbox" [checked]="task.completed" (change)="toggleCompleted()"
           (click)="$event.stopPropagation()" />
-      </label>
+      </label> -->
       <h4 (click)="startEditing()">{{ task.name }}</h4>
     </div>
 

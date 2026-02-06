@@ -6,11 +6,23 @@ import { Task } from '../../models/task';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { IftaLabelModule } from 'primeng/iftalabel';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @Component({
   selector: 'app-task-card',
   standalone: true,
-  imports: [CommonModule, FormsModule, InputTextModule, ButtonModule, DatePickerModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    InputTextModule,
+    ButtonModule,
+    DatePickerModule,
+    AutoCompleteModule,
+    IftaLabelModule,
+    CheckboxModule
+  ],
   templateUrl: './task-card.component.html',
   styleUrl: './task-card.component.scss'
 })
@@ -23,16 +35,16 @@ export class TaskCardComponent {
 
   isEditing = signal(false);
   editingName = signal('');
-  editingDueDate = signal('');
+  editingDueDate = signal<Date | null>(null);
   editingCompleted = signal(false);
-  editingTags = signal('');
+  editingTags = signal<string[]>([]);
 
   startEditing() {
     this.isEditing.set(true);
     this.editingName.set(this.task.name);
-    this.editingDueDate.set(this.formatDateForInput(this.task.dueDate));
+    this.editingDueDate.set(new Date(this.task.dueDate));
     this.editingCompleted.set(this.task.completed);
-    this.editingTags.set(this.task.tags.join(', '));
+    this.editingTags.set(this.task.tags);
   }
 
   cancelEditing() {
@@ -43,12 +55,9 @@ export class TaskCardComponent {
     const name = this.editingName().trim();
     if (!name) return;
 
-    const tags = this.editingTags()
-      .split(',')
-      .map(tag => tag.trim())
-      .filter(tag => tag.length > 0);
+    const tags = this.editingTags();
 
-    const dueDate = this.editingDueDate() ? new Date(this.editingDueDate()) : this.task.dueDate;
+    const dueDate = this.editingDueDate() ? this.editingDueDate()! : this.task.dueDate;
 
     this.taskService.updateTask(
       this.task.id,
@@ -74,7 +83,7 @@ export class TaskCardComponent {
       this.task.position,
       this.task.createdAt,
       this.task.dueDate,
-      !this.task.completed,
+      this.task.completed,
       this.task.tags
     ).subscribe({
       next: (updatedTask) => {
