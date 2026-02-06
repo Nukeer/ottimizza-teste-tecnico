@@ -1,0 +1,53 @@
+<div class="kanban-column">
+  <div class="column-header">
+    @if (isEditingColumn()) {
+    <input pInputText type="text" [(ngModel)]="editingColumnName" class="column-title-input"
+      (keyup.enter)="updateColumn()" (keyup.escape)="cancelEditingColumn()" (click)="$event.stopPropagation()"
+      autofocus />
+    } @else {
+    <h3 (click)="startEditingColumn()">{{ column.name }}</h3>
+    <span class="task-count">{{ tasks().length }}</span>
+    }
+
+    <div class="column-menu">
+      @if (isEditingColumn()) {
+      <button pButton severity="success" (click)="updateColumn()" title="Salvar">✓</button>
+      <button pButton severity="danger" (click)="cancelEditingColumn()" title="Cancelar">✕</button>
+      } @else {
+      <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [text]="true" (click)="deleteColumn()" />
+      }
+    </div>
+  </div>
+
+  <div class="tasks-container" (dragover)="onTaskDragOver($event)" (drop)="onColumnDrop($event)">
+    @for (task of tasks(); track task.id) {
+    <div draggable="true" (dragstart)="onTaskDragStart(task.id, $event)" (dragover)="onTaskDragOver($event)"
+      (drop)="onTaskDrop(task.id, $event)" (dragend)="onTaskDragEnd()" [class.dragging]="draggedTaskId() === task.id">
+      <app-task-card [task]="task" (taskUpdate)="onTaskUpdate($event)" (taskDelete)="onTaskDelete($event)" />
+    </div>
+    }
+
+    @if (isCreatingTask()) {
+    <div class="task-create">
+      <input pInputText type="text" [(ngModel)]="newTaskName" placeholder="Nome da tarefa" (keyup.enter)="createTask()"
+        (keyup.escape)="cancelCreatingTask()" autofocus />
+      <input pInputText type="date" [(ngModel)]="newTaskDueDate" />
+      <div class="task-actions">
+        <button pButton severity="success" (click)="createTask()">
+          <span pButtonLabel>Criar</span>
+        </button>
+        <button pButton severity="danger" (click)="cancelCreatingTask()">
+          <span pButtonLabel>Cancelar</span>
+        </button>
+      </div>
+    </div>
+    }
+  </div>
+
+  <div class="location-button-in-bottom">
+    <p-button class="btn-full" variant="text" (click)="startCreatingTask()" *ngIf="!isCreatingTask()">
+      <i class="pi pi-plus" pButtonIcon></i>
+      <span pButtonLabel>Adicionar tarefa</span>
+    </p-button>
+  </div>
+</div>

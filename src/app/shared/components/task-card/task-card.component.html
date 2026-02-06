@@ -1,0 +1,55 @@
+<div class="task-card" [class.completed]="task.completed" [class.overdue]="isOverdue()">
+  @if (isEditing()) {
+  <div class="task-edit">
+    <input pInputText type="text" [(ngModel)]="editingName" placeholder="Nome da tarefa" (keyup.enter)="updateTask()"
+      (keyup.escape)="cancelEditing()" autofocus />
+
+    <input pInputText type="date" [(ngModel)]="editingDueDate" />
+
+    <input pInputText [(ngModel)]="editingTags" placeholder="Tags (separadas por vírgula)" />
+
+    <label class="checkbox-label">
+      <input type="checkbox" [(ngModel)]="editingCompleted" />
+      Concluída
+    </label>
+
+    <div class="task-actions">
+      <button pButton severity="success" (click)="updateTask()">
+        <span pButtonLabel>Salvar</span>
+      </button>
+      <button pButton severity="danger" (click)="cancelEditing()">
+        <span pButtonLabel>Cancelar</span>
+      </button>
+    </div>
+  </div>
+  } @else {
+  <div class="task-view" (click)="startEditing()">
+    <div class="task-header">
+      <label class="checkbox-container">
+        <input type="checkbox" [checked]="task.completed" (change)="toggleCompleted()"
+          (click)="$event.stopPropagation()" />
+      </label>
+      <h4 (click)="startEditing()">{{ task.name }}</h4>
+    </div>
+
+    <div class="task-meta">
+      <span class="task-date" [class.overdue]="isOverdue()">
+        📅 {{ formatDate(task.dueDate) }}
+      </span>
+    </div>
+
+    @if (task.tags.length > 0) {
+    <div class="task-tags">
+      @for (tag of task.tags; track tag) {
+      <span class="tag">{{ tag }}</span>
+      }
+    </div>
+    }
+
+    <div class="task-footer">
+      <p-button icon="pi pi-pen-to-square" [rounded]="true" [text]="true" (click)="startEditing()" />
+      <p-button icon="pi pi-trash" [rounded]="true" [text]="true" (click)="deleteTask()" />
+    </div>
+  </div>
+  }
+</div>

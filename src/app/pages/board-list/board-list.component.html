@@ -1,0 +1,64 @@
+<div class="board-header">
+  <h1>Meus Quadros</h1>
+  <button pButton (click)="startCreating()" *ngIf="!isCreating()">
+    <i class="pi pi-plus" pButtonIcon></i>
+    <span pButtonLabel>Novo Quadro</span>
+  </button>
+</div>
+<div class="board-list-container">
+  <div class="boards-grid">
+    @if (isCreating()) {
+    <div class="board-card board-card-create">
+      <input pInputText type="text" [(ngModel)]="newBoardName" placeholder="Nome do quadro" class="board-input"
+        (keyup.enter)="createBoard()" (keyup.escape)="cancelCreating()" autofocus />
+      <div class="card-actions">
+        <button pButton severity="success" (click)="createBoard()">
+          <span pButtonLabel>Criar</span>
+        </button>
+        <button pButton severity="danger" (click)="cancelCreating()">
+          <span pButtonLabel>Cancelar</span>
+        </button>
+      </div>
+    </div>
+    }
+
+    @for (board of boards(); track board.id) {
+    <div class="board-card" (click)="openBoard(board.id)">
+      @if (editingBoardId() === board.id) {
+      <input pInputText type="text" [(ngModel)]="editingBoardName" (keyup.enter)="updateBoard(board.id)"
+        (keyup.escape)="cancelEditing()" (click)="$event.stopPropagation()" autofocus />
+      } @else {
+      <h3>{{ board.name }}</h3>
+      }
+
+      <div class="card-actions" (click)="$event.stopPropagation()">
+        @if (editingBoardId() === board.id) {
+        <button pButton severity="success" (click)="updateBoard(board.id)">
+          <span pButtonLabel>Salvar</span>
+        </button>
+        <button pButton severity="danger" (click)="cancelEditing()">
+          <span pButtonLabel>Cancelar</span>
+        </button>
+        } @else {
+        <button pButton severity="success" (click)="startEditing(board)">
+          <span pButtonLabel>Editar</span>
+        </button>
+        <button pButton severity="danger" (click)="deleteBoard(board.id)">
+          <span pButtonLabel>Excluir</span>
+        </button>
+        }
+      </div>
+    </div>
+    }
+  </div>
+
+  @if (boards().length === 0 && !isCreating()) {
+  <div class="empty-state">
+    <p>Nenhum quadro criado ainda.</p>
+    <button pButton (click)="startCreating()">
+      <i class="pi pi-plus" pButtonIcon></i>
+      <span pButtonLabel>Criar primeiro quadro</span>
+    </button>
+  </div>
+  }
+</div>

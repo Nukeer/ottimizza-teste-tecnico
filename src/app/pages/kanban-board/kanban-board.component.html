@@ -1,0 +1,39 @@
+<div class="kanban-board-container">
+  <div class="board-header">
+    <button pButton (click)="goBack()">
+      <i class="pi pi-arrow-left" pButtonIcon></i>
+      <span pButtonLabel>Voltar</span>
+    </button>
+    <h1>{{ board()?.name || 'Carregando...' }}</h1>
+    <button pButton (click)="startCreatingColumn()" *ngIf="!isCreatingColumn()">
+      <i class="pi pi-plus" pButtonIcon></i>
+      <span pButtonLabel>Nova Coluna</span>
+    </button>
+  </div>
+
+  <div class="columns-container">
+    @for (column of columns(); track column.id) {
+    <div class="column-wrapper" draggable="true" (dragstart)="onColumnDragStart(column.id)"
+      (dragover)="onColumnDragOver($event)" (drop)="onColumnDrop(column.id)" (dragend)="onColumnDragEnd()"
+      [class.dragging]="draggedColumnId() === column.id">
+      <app-kanban-column [column]="column" (columnUpdate)="onColumnUpdate($event)"
+        (columnDelete)="onColumnDelete($event)" />
+    </div>
+    }
+
+    @if (isCreatingColumn()) {
+    <div class="column-create">
+      <input pInputText type="text" [(ngModel)]="newColumnName" placeholder="Nome da coluna"
+        (keyup.enter)="createColumn()" (keyup.escape)="cancelCreatingColumn()" autofocus />
+      <div class="column-actions">
+        <button pButton severity="success" (click)="createColumn()">
+          <span pButtonLabel>Criar</span>
+        </button>
+        <button pButton severity="danger" (click)="cancelCreatingColumn()">
+          <span pButtonLabel>Cancelar</span>
+        </button>
+      </div>
+    </div>
+    }
+  </div>
+</div>

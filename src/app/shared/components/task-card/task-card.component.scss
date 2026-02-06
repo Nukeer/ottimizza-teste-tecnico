@@ -1,0 +1,137 @@
+.task-card {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 0.75rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-color: #007bff;
+  }
+
+  &.completed {
+    opacity: 0.7;
+
+    h4 {
+      text-decoration: line-through;
+      color: #6c757d;
+    }
+  }
+
+  &.overdue {
+    border-left: 3px solid #dc3545;
+  }
+}
+
+.task-view {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.task-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+
+  h4 {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #333;
+    flex: 1;
+    word-break: break-word;
+  }
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  input[type="checkbox"] {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.task-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.task-date {
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+
+  &.overdue {
+    color: #dc3545;
+    font-weight: 600;
+  }
+}
+
+.task-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.tag {
+  background: #e7f3ff;
+  color: #0066cc;
+  padding: 0.125rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.688rem;
+  font-weight: 500;
+}
+
+.task-footer {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  padding-top: 0.25rem;
+  border-top: 1px solid #f1f3f5;
+}
+
+.task-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.task-input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.875rem;
+
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+
+  input[type="checkbox"] {
+    cursor: pointer;
+  }
+}
+
+.task-actions {
+  display: flex;
+  gap: 0.5rem;
+}
